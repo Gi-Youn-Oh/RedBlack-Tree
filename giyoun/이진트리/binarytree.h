@@ -2,18 +2,19 @@
 #include <iostream>
 #define TRUE 1
 #define FALSE 0
-struct BinTreeNode{
+struct BinTreeNode{ // 트리에 저장되는 각각의 자료의미 실제값 data와 자식 노드를 가리키는 링크를 포함한다.
     int data;
     struct BinTreeNode*pLeftChild;
     struct BinTreeNode*pRightChild;
 };
-struct BinTree{
+struct BinTree{  // 실제 이진트리
+   
     BinTreeNode* pRootNode;
 };
 BinTree* MakeBinTree(BinTreeNode rootNode); // 이진트리 생성
 BinTreeNode* getRootNode(BinTree*pBinTree); // 루트노드 반환
-BinTreeNode* inseertLeftChileNode(BinTreeNode*pParentNode,BinTreeNode element); // 왼쪽자식 노드 추가
-BinTreeNode* inseertRightChileNode(BinTreeNode*pParentNode,BinTreeNode element); // 오른쪽 자식 노드 추가
+BinTreeNode* insertLeftChildNode(BinTreeNode*pParentNode,BinTreeNode element); // 왼쪽자식 노드 추가
+BinTreeNode* insertRightChildNode(BinTreeNode*pParentNode,BinTreeNode element); // 오른쪽 자식 노드 추가
 BinTreeNode* getLeftChildNode(BinTreeNode* pNode); //왼쪽 자식 노드 반환
 BinTreeNode* getRightChildNode(BinTreeNode* pNode); //오른쪽 자식 노드 반환
 //BinTreeNode*getData();

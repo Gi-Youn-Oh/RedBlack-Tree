@@ -22,7 +22,7 @@ BinTree* MakeBinTree(BinTreeNode rootNode){
 // 입력변수로 루트노드가 될 값을 받고 루트노드로 설정한다. 설정 후 루트 노드의 자식 링크를 각각 NULL 값으로 초기화해주고 이진트리를 반환한다.
 
 //InsertChildNode()
-BinTreeNode* inseertLeftChileNode(BinTreeNode* pParentNode, BinTreeNode element){
+BinTreeNode* insertLeftChildNode(BinTreeNode* pParentNode, BinTreeNode element){
     BinTreeNode* pReturn = NULL;
     if (pParentNode != NULL){
         if (pParentNode ->pLeftChild ==NULL){
@@ -39,12 +39,12 @@ BinTreeNode* inseertLeftChileNode(BinTreeNode* pParentNode, BinTreeNode element)
     return pReturn;
 }// 왼쪽 자식 노드 추가
 
-BinTreeNode* inseertLeftChileNode(BinTreeNode* pParentNode, BinTreeNode element){
+BinTreeNode* insedrtRightChildNode(BinTreeNode* pParentNode, BinTreeNode element){
     BinTreeNode* pReturn = NULL;
     if (pParentNode != NULL){
         if (pParentNode ->pRightChild ==NULL){
             pParentNode ->pRightChild = (BinTreeNode*)malloc(sizeof(BinTreeNode)); 
-            *pParentNode->pRightChild =element; // 부모 노드의 왼쪽 자식 링크를 element로 설정
+            *pParentNode->pRightChild =element; // 부모 노드의 오른쪽 자식 링크를 element로 설정
             pParentNode->pRightChild->pLeftChild =NULL; // 새로운 노드 자식링크 초기화
             pParentNode->pRightChild->pRightChild=NULL; // 새로운 노드 자식링크 초기화
             pReturn = pParentNode->pRightChild; // 반환값 설정
