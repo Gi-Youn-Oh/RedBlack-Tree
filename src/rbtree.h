@@ -4,7 +4,7 @@
 #include <stddef.h>
 
 typedef enum { RBTREE_RED, RBTREE_BLACK } color_t;
-
+// 숫자랑 짝지어줌 0,1
 typedef int key_t;
 
 typedef struct node_t {
