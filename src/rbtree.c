@@ -88,15 +88,71 @@ void delete_rbtree(rbtree *t) {
   free(t);
 }
 
+
+void rbtree_insert_fixup(rbtree* t,node_t* z){
+    node_t* y;
+
+    while (z->parent->color = RBTREE_RED){
+        // z의 부모가 조부모의 왼쪽 서브 트리일 경우
+        if (z->parent == z->parent->parent->left){
+            y = z->parent->parent->right;
+
+            // case1. 노드 z의 삼촌 y가 적색인 경우
+            if (y->color == RBTREE_RED){
+                z->parent->color == RBTREE_BLACK;
+                y->color == RBTREE_BLACK;
+                z->parent->parent->color == RBTREE_RED;
+                z = z->parent->parent;
+            
+            }
+            // case2. z의 삼촌 y가 흑색이며 z가 오른쪽 자식인 경우
+            else { 
+                if (z == z->parent->right){
+                    z = z->parent;
+                    left_rotate(t,z);
+                }
+                // case3. z의 삼촌 y가 흑색이며 z가 오른쪽 자식인 경우
+                z->parent->color = RBTREE_BLACK;
+                z->parent->parent->color = RBTREE_RED;
+                right_rotate(t,z->parent->parent);
+            }
+        }
+            // z의 부모가 조부모의 왼쪽 서브 트리일 경우    
+        else{
+            y = z->parent->parent->left;
+
+            //case4. 노드 z의 삼촌 y가 적색인 경우
+            if (y->color == RBTREE_RED) {
+                z->parent->color = RBTREE_BLACK;
+                y->color = RBTREE_BLACK;
+                z->parent->parent->color = RBTREE_RED;
+                z = z->parent->parent;
+            }
+            // case5. z의 삼촌 y가 흑색이며 z가 오른쪽 자식인 경우
+            else {
+                if ( z== z->parent->left){
+                    z = z->parent;
+                    right_rotate(t,z);
+                }
+                // case 6. z의 삼촌 y가 흑색이며 z가 오르쪽 자식인 경우
+                z->parent->color = RBTREE_BLACK;
+                z->parent->parent->color = RBTREE_RED;
+                left_rotate(t,z->parent->parent);
+            }
+        }
+    }
+    t->root->color = RBTREE_BLACK;    
+}
+
 node_t *rbtree_insert(rbtree *t, const key_t key) {
   // TODO: implement insert    
     node_t* y = t->nil;
     node_t* x = t->root;
-    node_t* z = (node_t*)calloc(1, sizeof(node_t));
+    node_t* z = (node_t*)calloc(1, sizeof(node_t)); // 새로 삽입되는 노드
 
-    z->key = key;
-
-    while (x != t->nil){
+    z->key = key; // z 의 키 값 할당  다른 노드들은 key 값을 가지고 있다고 가정
+    // leaf node 도달할 때 까지 탐샘
+    while (x != t->nil){ 
         y = x;
         if (z->key < x->key)
             x = x->left;
