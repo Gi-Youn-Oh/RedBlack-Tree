@@ -88,7 +88,7 @@ void delete_rbtree(rbtree *t) {
   free(t);
 }
 
-
+// 삽입 후 재조정
 void rbtree_insert_fixup(rbtree* t,node_t* z){
     node_t* y;
 
@@ -144,6 +144,7 @@ void rbtree_insert_fixup(rbtree* t,node_t* z){
     t->root->color = RBTREE_BLACK;    
 }
 
+// 삽입
 node_t *rbtree_insert(rbtree *t, const key_t key) {
   // TODO: implement insert    
     node_t* y = t->nil;
@@ -177,20 +178,64 @@ node_t *rbtree_insert(rbtree *t, const key_t key) {
     return z;
 }
 
-
+// 찾기
 node_t *rbtree_find(const rbtree *t, const key_t key) {
   // TODO: implement find
-  return t->root;
+  node_t* current = t->root; // 루트부터 시작해서 찾아내려감
+
+  while( current != t->nil){ // nil이 아니면 계속 탐색
+      if (current->key == key) // 찾는 키값과 일치하면
+          return current;
+      
+      if (current->key < key) // 찾는 키값이 현재 키값보다 크면
+          current = current->right;
+      else                    // 찾는 키값이 현재 키값보다 작으면
+          current = current->left;
+  }
+  return NULL;
 }
 
+// 최소값 찾기
 node_t *rbtree_min(const rbtree *t) {
   // TODO: implement find
-  return t->root;
+  if (t->root == t->nil){ // t 가 루트를 가리킬때 nil 값이면 NULL 반환
+      return NULL;
+  }
+  node_t* current = t->root; // 시작점을 루트로 할당
+
+  while (current->left != t->nil){ // 왼쪽 (작은 쪽으로) 계속 탐색 nil 아닐때까지
+      current = current->left;
+  }
+  return current;
 }
 
+// 최대값 찾기
 node_t *rbtree_max(const rbtree *t) {
   // TODO: implement find
-  return t->root;
+  if (t->root != t->nil){
+      return NULL;
+  }
+  node_t* current = t->root;
+
+  while (current->right != t->nil){
+      current = current->right;
+  }
+  return current;
+}
+
+// 서브트리 
+void rbtree_transplant(rbtree* t, node_t* u, node_t* v){
+  if (u->parent == t->nil){ // u가 루트 노드이면 v를 u 자리에
+    t->root = v; // 즉 루트 노드에 v를 대체한다.
+  }
+  // 루트 노드가 아니면 왼쪽 노드이거나 오른쪽 노드 둘중 하나이다.
+  else if (u==u->parent->left){
+    u->parent->left=v;
+  }
+  else {
+    u->parent->right =v ;
+  }
+  v->parent = u->parent;
 }
 
 int rbtree_erase(rbtree *t, node_t *p) {
