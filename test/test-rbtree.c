@@ -1,8 +1,8 @@
-#include <assert.h>
+#include <assert.h> // check debug
 #include <rbtree.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h> // 동적 메모리 할당 , calloc or malloc
 
 // new_rbtree should return rbtree struct with null root node
 void test_init(void) {
