@@ -238,9 +238,59 @@ void rbtree_transplant(rbtree* t, node_t* u, node_t* v){
   v->parent = u->parent;
 }
 
-int rbtree_erase(rbtree *t, node_t *p) {
-  // TODO: implement erase
-  return 0;
+
+// z 는  트리에서 삭제될 노드 , y는 z 를 대체할 노드
+// z가 하나 이하의 자식을 가질경우 y -> z 가리키도록 설정되며 삭제된다.
+// z가 두개의 자식을 가질 경우 y는 z의 직후 원소로 설정되며 y는 z의 위치로 이동한다.
+// x는 y의 원래 위치로 이동하는 노드
+int rbtree_erase(rbtree* t,node_t* z){
+   // TODO: implement erase
+
+    node_t* y; 
+    node_t* x;
+    color_t yOriginalColor; // 원래 컬러 저장하기위해 추후 black 이면 문제가 됨 -> fixup
+
+    y = z;
+    yOriginalColor = y->color; // y의 색이 변경될 수 있으므로 저장
+    // z의 자식노드가 1개 이하이면
+    if (z->left == t->nil){
+        x = z->right;
+        rbtree_transplant(t,z,z->right);
+    }
+    else if (z->right == t->nil){
+        x = z->left;
+        rbtree_transplant(t,z,z->left);
+    }
+    else{ // z의 자식 노드가 두개일때
+        y = z->right;
+        while(y->left != t->nil){ // 직후 원소 찾기
+            y = y->left;
+        }
+        yOriginalColor = y->color;
+        x = y->right;
+
+        if (y->parent == z){
+            x->parent = y;
+        }
+        else {
+            rbtree_transplant(t,y,y->right);
+            y->right = z->right;
+            y->right->parent = y;
+        }
+
+        rbtree_transplant(t, z, y);
+        y->left = z->left;
+        y->left->parent = y;
+        y->color = z->color;
+    } 
+
+    if (yOriginalColor == RBTREE_BLACK){ // y의 컬러가 원래 블랙이면 문제가 됨
+        rbtree_delete_fixup(t,x); // 재조정
+    }
+
+    free(z);
+    
+    return 0;
 }
 
 int rbtree_to_array(const rbtree *t, key_t *arr, const size_t n) {
